@@ -1,0 +1,30 @@
+# Tool version log — Chapter 2 pipeline environment (WSL2 Ubuntu 24.04.1 LTS)
+# Format: tool | thesis-reported version | installed version | match? | conda env | notes
+#
+# Updated incrementally as each environment is built (Phase 0.4-0.5). Cross-reference
+# against PLAN_verification_and_completion.md Phase 0 and VERIFICATION_CHECKLIST.md.
+
+## env_qc (Steps 00/01 — QC + k-mer genome size estimation)
+fastqc          | v0.11.8 (Appendix I, p.67)         | 0.11.8  | MATCH | env_qc | exact match available on bioconda
+trimmomatic     | v0.38 (Appendix I, p.67)           | 0.38    | MATCH | env_qc | exact match available on bioconda
+jellyfish       | unversioned (Marcais & Kingsford 2011) | 2.3.0 (kmer-jellyfish package) | N/A — no version pinned in thesis | env_qc | NAME COLLISION FLAG: conda-forge's "jellyfish" package is an unrelated string-similarity library. The genomic k-mer counter is bioconda's "kmer-jellyfish". Anyone re-running this must use kmer-jellyfish, not jellyfish.
+kmc             | unversioned (Kokot et al, 2017, KMC3) | 3.2.1 | N/A — no version pinned in thesis | env_qc | latest available on bioconda at install time
+genomescope2    | "GenomeScope2.0" (Ranallo-Benavidez et al, 2020) | 2.0.1 | MATCH (major.minor) | env_qc | bioconda's 2.0.1 is a patch release of 2.0, treated as matching
+
+## Environment metadata
+WSL2 distro       : Ubuntu 24.04.1 LTS (kernel 5.10.16)
+Host RAM          : 31.8 GB / WSL2 allocation: 24 GB (defaults, not yet capped — see Plan Phase 0.2)
+Host CPUs         : 20 logical cores
+conda/mamba       : Miniforge3, conda 26.3.2, mamba 2.5.0
+Install date      : 2026-06-20
+Drive mounts      : /mnt/d, /mnt/e, /mnt/f confirmed readable (real P1 files read successfully)
+
+## Pending environments (not yet installed — install incrementally per the plan, one per checkpoint)
+env_assembly      : spades, purge_haplotigs, pilon, minimap2, samtools     — for Step 02/03
+env_scaffold      : ragtag, medusa                                         — for Step 04/05
+env_gapfill       : tgsgapcloser, gapcloser, lr_gapcloser, gapfiller       — for Step 06
+env_qc_assembly   : quast, busco, mummer, nucmer, sibeliaz                 — for Step 09/15
+env_ychrom        : dsk, blast (for DiscoverY + BLASTn filter)             — for Step 10
+env_repeat        : repeatmodeler, repeatmasker, blast                     — for Step 12
+env_annotation    : maker, augustus, exonerate, snap, glimmerhmm, liftoff  — for Step 13
+env_canu          : canu                                                   — for Step 02 (long-read correction)
